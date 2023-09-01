@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import categories from '../categories'
+import { z } from "Zod"
+
 
 const Button = styled.button`
   border-radius: 8px;
@@ -20,35 +23,72 @@ const Button = styled.button`
   outline: 4px auto -webkit-focus-ring-color;
 }
 `
+
 const TaskFormContainer = styled.div`
   position: fixed;
   top: 6rem;
   width: 50em;
 `
-export default function TaskForm() {
+
+const TaskFormData = z.object({
+  title: z
+    .string()
+    .min(3, { message: 'Title should be at least 3 characters' })
+    .max(50, { message: 'Title must contain at most 50 character(s)' }),
+  dueDate: z
+    .date({ required_error: "Please select a date", }),
+  category: z
+    .string({ required_error: "Please select a category", })
+})
+
+
+interface PropsTaskForm {
+  title: string;
+  dueDate: Date;
+  category: string;
+  onSubmit: void
+}
+
+
+export default function TaskForm({ title, dueDate, category, onSubmit }: PropsTaskForm) {
+
+
   return (
     <TaskFormContainer>
-        <form >
-            <div className ="mb-3">
-                <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" className="form-control"
-                    id="title" name="title"
-                />
+      <form >
+        <div className="mb-3">
+          <label className="form-label" htmlFor="title" >Title</label>
+          <input className="form-control"
+            type="text"
+            id="title"
+            name="title"
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label" htmlFor="dueDate" >Due Date</label>
+          <input className="form-control"
+            type="date"
+            id="dueDate"
+            name="dueDate"
+          />
             </div>
             <div className ="mb-3">
-                <label htmlFor="date" className="form-label">Due Date</label>
-                <input type="date" className="form-control"
-                    id="due-date" name="due-date"
-                />
-            </div>
-            <div className ="mb-3">
-                <label htmlFor="category" className="form-label">Due Date</label>
-                <select id="category" className="form-select">
-                    <option>Disabled select</option>
-                </select>
-            </div>
-        </form >
+          <label className="form-label" htmlFor="category" >Category</label>
+          <select className="form-select"
+            id="category"
+            name="category"
+          >
+            <option>Select category</option>
+            {categories.map((option, index) => {
+              return <option key={index}>{option}</option>
+            })}
+          </select>
+        </div>
+
         <Button>Submit</Button>
+
+      </form >
+
     </TaskFormContainer>
   )
 }

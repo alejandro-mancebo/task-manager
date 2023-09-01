@@ -1,27 +1,33 @@
-# React + TypeScript + Vite
+# Task Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A tool that allows users to add, view, and delete tasks. Each task will have a title, a due date, and a category.
 
-Currently, two official plugins are available:
+## Introduction
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is built using React and TypeScript and it demonstrates concepts such as handling form inputs, maintaining application state, and implementing UI components.
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Setup your development environment. Install NodeJS and make sure you have node version 16 or higher.
 
-- Configure the top-level `parserOptions` property like this:
+### Installing
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+1. Create a new React application using Vite:
+ . npx create-vite task-manager --template react-ts
+ . cd my-todo-app
+ . npm install
+ 
+2. Install the necessary dependencies: 
+ . npm install react-hook-form
+ . npm install @hookform/resolvers zod
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Install dependencies for easier styling:
+ . npm install bootstrap
+ . npm install styled-components
+
+3. Then import it in your main.tsx:
+ . import 'bootstrap/dist/css/bootstrap.css'
+
+4. Run the application:
+ . npm run dev
+
