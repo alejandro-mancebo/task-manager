@@ -1,10 +1,10 @@
-import { useForm, Form } from "react-hook-form"
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from "zod";
+import categories from '../categories';
 
-import styled from 'styled-components'
-
-import categories from '../categories'
-
-import { z } from "Zod"
+import Task from '../types/Task';
+import styled from 'styled-components';
 
 
 const Button = styled.button`
@@ -26,13 +26,18 @@ const Button = styled.button`
   &:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-`
+`;
 
 const TaskFormContainer = styled.div`
   position: fixed;
   top: 6rem;
   width: 50em;
-`
+
+  .errors {
+    margin-top: .5rem;
+    color: red;
+  }
+`;
 
 const TaskFormData = z.object({
   title: z
@@ -40,59 +45,80 @@ const TaskFormData = z.object({
     .min(3, { message: 'Title should be at least 3 characters' })
     .max(50, { message: 'Title must contain at most 50 character(s)' }),
   dueDate: z
-    .date({ required_error: "Please select a date", }),
+    .string().nonempty({ message: "Please select a date", }),
   category: z
-    .string({ required_error: "Please select a category", })
-})
+    .string().nonempty("Please select a category")
+});
 
 
 interface PropsTaskForm {
-  title: string;
-  dueDate: Date;
-  category: string;
-  onSubmit: void
-}
+  onSubmit: (e: any) => void;
+};
 
 
-export default function TaskForm({ title, dueDate, category, onSubmit }: PropsTaskForm) {
+export default function TaskForm({ onSubmit }: PropsTaskForm) {
+
+  const form = useForm<Task>({
+    defaultValues: {
+      title: "",
+      dueDate: undefined,
+      category: "",
+    },
+    resolver: zodResolver(TaskFormData)
+  });
+
+  const { register, control, reset, handleSubmit, formState, } = form;
+  const { errors } = formState;
+
+  const onSubmitHandle = (data: Task) => {
+    if (data !== undefined) {
+      onSubmit(data)
+    }
+    form.reset()
+    // console.log(data)
+  }
 
 
   return (
     <TaskFormContainer>
-      <form >
+      <form onSubmit={handleSubmit(onSubmitHandle)}>
         <div className="mb-3">
           <label className="form-label" htmlFor="title" >Title</label>
           <input className="form-control"
             type="text"
             id="title"
-            name="title"
+            {...register("title")}
           />
+          {errors.title?.message && <p className="errors">{errors.title?.message}</p>}
         </div>
+
         <div className="mb-3">
           <label className="form-label" htmlFor="dueDate" >Due Date</label>
           <input className="form-control"
             type="date"
             id="dueDate"
-            name="dueDate"
+            {...register("dueDate")}
           />
-            </div>
-            <div className ="mb-3">
+          {errors.dueDate?.message && <p className="errors">{errors.dueDate?.message}</p>}
+        </div>
+
+        <div className="mb-3">
           <label className="form-label" htmlFor="category" >Category</label>
           <select className="form-select"
             id="category"
-            name="category"
+            {...register("category")}
           >
-            <option>Select category</option>
             {categories.map((option, index) => {
               return <option key={index}>{option}</option>
             })}
           </select>
+          {errors.category?.message && <p className="errors">{errors.category?.message}</p>}
         </div>
 
-        <Button>Submit</Button>
+        <Button >Submit</Button>
 
       </form >
 
     </TaskFormContainer>
-  )
-}
+  );
+};

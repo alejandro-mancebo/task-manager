@@ -14,12 +14,13 @@ Setup your development environment. Install NodeJS and make sure you have node v
 
 1. Create a new React application using Vite:
  . npx create-vite task-manager --template react-ts
- . cd my-todo-app
+ . cd task-manager
  . npm install
  
 2. Install the necessary dependencies: 
  . npm install react-hook-form
  . npm install @hookform/resolvers zod
+ . npm install zod
 
 2. Install dependencies for easier styling:
  . npm install bootstrap
