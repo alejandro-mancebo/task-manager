@@ -67,7 +67,7 @@ export default function TaskForm({ onSubmit }: PropsTaskForm) {
     resolver: zodResolver(TaskFormData)
   });
 
-  const { register, control, reset, handleSubmit, formState, } = form;
+  const { register, handleSubmit, formState, } = form;
   const { errors } = formState;
 
   const onSubmitHandle = (data: Task) => {
